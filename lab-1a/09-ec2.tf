@@ -1,3 +1,7 @@
+############################################
+# IAM Role + Instance Profile for EC2
+############################################
+
 # Explanation: bos refuses to carry static keys—this role lets EC2 assume permissions safely.
 resource "aws_iam_role" "bos_ec2_role01" {
   name = "${local.name_prefix}-ec2-role01"
@@ -19,9 +23,11 @@ resource "aws_iam_role_policy_attachment" "bos_ec2_ssm_attach" {
 }
 
 # Explanation: EC2 must read secrets/params during recovery—give it access (students should scope it down).
-resource "aws_iam_role_policy_attachment" "bos_ec2_secrets_attach" {
-  role       = aws_iam_role.bos_ec2_role01.name
-  policy_arn = "arn:aws:iam::aws:policy/SecretsManagerReadWrite" # TODO: student replaces w/ least privilege
+resource "aws_iam_role_policy" "bos_ec2_secrets_access" {
+  name = "secrets-manager-bos-rds"
+  role = aws_iam_role.bos_ec2_role01.id
+
+  policy = file("${path.module}/1a_inline_policy.json")
 }
 
 # Explanation: CloudWatch logs are the “ship’s black box”—you need them when things explode.
@@ -47,6 +53,7 @@ resource "aws_instance" "bos_ec201" {
   subnet_id              = aws_subnet.bos_public_subnets[0].id
   vpc_security_group_ids = [aws_security_group.bos_ec2_sg01.id]
   iam_instance_profile   = aws_iam_instance_profile.bos_instance_profile01.name
+  user_data              = file("${path.module}/1a_user_data.sh")
 
   # TODO: student supplies user_data to install app + CW agent + configure log shipping
   # user_data = file("${path.module}/user_data.sh")
