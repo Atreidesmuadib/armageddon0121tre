@@ -101,6 +101,50 @@ Must connect via EC2 session manager, as DB is inaccessible from public internet
     * Port 3306
 <img width="1412" height="256" alt="rds-endpoint-connectivity-target" src="https://github.com/user-attachments/assets/a1235342-7964-4bb7-a17e-a51371268e9c" />
 
+*****
+
+6.5 Verify Security Group Rules (Critical)
+* Command: aws ec2 describe-security-groups --filters "Name=tag:Name,Values=bos-rds-sg01" --query "SecurityGroups[].IpPermissions"
+* Expected
+    * TCP port 3306
+    * Source referencing EC2 security group ID, not CIDR
+<img width="1611" height="515" alt="verify-security-group-rules" src="https://github.com/user-attachments/assets/67820177-2936-48a5-8d87-fc8ce4c1e7db" />
+
+*****
+
+6.6 Verify Secrets Manager Access (From EC2)
+SSH into EC2 and run:
+* Command: aws secretsmanager get-secret-value --secret-id bos/rds/mysql
+* Expected
+    * JSON Containing:
+      * username
+      * password
+      * host
+      * port
+<img width="1915" height="503" alt="secrets-manager-access" src="https://github.com/user-attachments/assets/9ff89e09-c3b9-4aac-8a8c-682e3ece34a4" />
+
+*****
+
+6.7 Verify DB connectivity (From EC2)  
+Install MySQL Client (temporary validation)  
+* Had to install MariaDB
+  * worked nonetheless
+  * Successful login & no timeout or connection refused errors
+<img width="1043" height="640" alt="verify-db-connectivity" src="https://github.com/user-attachments/assets/1dc97ec4-652a-4dba-bc7e-667054b9a55c" />
+
+*****
+
+6.8 Verify Data Path End-to-End  
+From browser:  
+http://<EC2_PUBLIC_IP>/init  
+<img width="455" height="288" alt="6-8init" src="https://github.com/user-attachments/assets/40f264c2-bdc2-4d6f-9157-c69664823224" />  
+
+http://<EC2_PUBLIC_IP>/add?note=cloud_labs_are_real  
+<img width="712" height="281" alt="6-8cloudlabsreal" src="https://github.com/user-attachments/assets/a8b59e39-5f99-45c1-872c-2329d8985abd" />  
+
+http://<EC2_PUBLIC_IP>/list
+<img width="467" height="348" alt="6 8list" src="https://github.com/user-attachments/assets/20d28cb1-e9af-4080-a70c-bcbe4ea6d4cd" />
+
 
 ---
 ### Evidence for Audits
