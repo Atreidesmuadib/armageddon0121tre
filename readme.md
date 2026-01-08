@@ -142,7 +142,7 @@ http://<EC2_PUBLIC_IP>/init
 http://<EC2_PUBLIC_IP>/add?note=cloud_labs_are_real  
 <img width="712" height="281" alt="6-8cloudlabsreal" src="https://github.com/user-attachments/assets/a8b59e39-5f99-45c1-872c-2329d8985abd" />  
 
-http://<EC2_PUBLIC_IP>/list
+http://<EC2_PUBLIC_IP>/list  
 <img width="467" height="348" alt="6 8list" src="https://github.com/user-attachments/assets/20d28cb1-e9af-4080-a70c-bcbe4ea6d4cd" />
 
 ---
