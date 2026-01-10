@@ -18,8 +18,12 @@ Infrastructure
 -    Security Group for EC2 - ingress: HTTP(80) and SSH(22) from your ip(not anywhere)
 -    Dont touch egress rules
 
-After lab has been properly built, let's break it and figure out the issue.
 
+---
+
+Goal for 1b: After infrastructure has been properly built, let's break it and figure out the issue.
+
+---
 ### New File Additions:
 From Larry's Repo:  
 * Download the lambda_ir_reporter.zip into your terraform file directory
@@ -30,4 +34,8 @@ From Larry's Repo:
 * Update the 1a_user_data.sh script with Larry's updated version
     * Includes the cloudwatch agent
 * Add bedrock_autoreport.tf
-    * Amazon Bedrock | AIOps pipeline implementation
+    * Amazon Bedrock | AIOps Automated Incident Report Generation
+* Add cloudwatch.tf file from Larry's repo
+* In output.tf file:
+    * Verify last 2 output blocks are active and not in comment format
+* Add sns_topic.tf from Larry's repo
