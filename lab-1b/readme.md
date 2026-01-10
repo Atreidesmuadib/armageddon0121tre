@@ -29,3 +29,5 @@ From Larry's Repo:
     * handler.py
 * Update the 1a_user_data.sh script with Larry's updated version
     * Includes the cloudwatch agent
+* Add bedrock_autoreport.tf
+    * Amazon Bedrock | AIOps pipeline implementation
