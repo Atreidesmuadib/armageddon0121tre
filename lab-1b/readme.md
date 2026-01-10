@@ -60,3 +60,26 @@ Secrets name: bos/rds/mysql
 DB-Identifier: bos-rds01
 
 Confirm your email is in the variables file for sns_endpoint in order to direct your pager
+
+
+### Breaking the Infrastructure
+
+Take your EC2 public IP and make it into a viewable page via http://<instance IP>/init to view the database
+
+Head to AWS Secrets Manager > Secrets in AWS Console
+* Retrieve secrets value
+* Change DB password (simple modification like adding a character)
+    * DB should now deny login
+
+SNS Alert Channel SNS Topic Name: lab-db-incidents aws sns create-topic --name lab-db-incidents Email Subscription (PagerDuty Simulation)
+
+    >>>aws sns subscribe \
+    --topic-arn <TOPIC_ARN> \
+    --protocol email \
+    --notification-endpoint youremail@example.com
+    *  change email
+
+    To retrieve your ARN:
+    console > SNS > Topic > copy ARN
+    my personal:
+    arn:aws:sns:us-east-1:435830281557:bos-db-incidents
