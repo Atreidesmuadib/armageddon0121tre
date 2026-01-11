@@ -45,10 +45,11 @@ From Larry's Repo:
     * include files within
 
 
-* From within python folder:
-    * run 'chmod +x ./gate_secrets_and_role.sh'
-    * run 'chmod +x ./gate_network_db.sh'
-    * run 'chmod +x ./run_all_gates.sh'
+From within python folder run the following, one at a time, in the following order:
+
+    >>> 'chmod +x ./gate_secrets_and_role.sh'
+    >>> 'chmod +x ./gate_network_db.sh'
+    >>> 'chmod +x ./run_all_gates.sh'
 
 Next, run the following, one at a time, in the following order:
 
