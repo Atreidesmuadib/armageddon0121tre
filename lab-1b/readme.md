@@ -73,7 +73,7 @@ Head to AWS Secrets Manager > Secrets in AWS Console
 
 SNS Alert Channel SNS Topic Name: lab-db-incidents aws sns create-topic --name lab-db-incidents Email Subscription (PagerDuty Simulation)
 
-    >>>aws sns subscribe \
+>>>aws sns subscribe \
     --topic-arn <TOPIC_ARN> \
     --protocol email \
     --notification-endpoint youremail@example.com
@@ -84,9 +84,9 @@ SNS Alert Channel SNS Topic Name: lab-db-incidents aws sns create-topic --name l
     my personal:
     arn:aws:sns:us-east-1:435830281557:bos-db-incidents
 
-    To configure error alerts to your provided email:
+To configure error alerts to your provided email:
 
-    aws cloudwatch put-metric-alarm \
+   >>>aws cloudwatch put-metric-alarm \
     --alarm-name lab-db-connection-failure \
     --metric-name DBConnectionErrors \
     --namespace Lab/RDSApp \
@@ -98,7 +98,7 @@ SNS Alert Channel SNS Topic Name: lab-db-incidents aws sns create-topic --name l
     --alarm-actions <SNS_TOPIC_ARN>
 
 Be sure to:
-   * input your namespace: in this case 'bos'
+   * input your namespace: in this case 'bos' or 'bos-rds01'
    * Input your sns topic ARN: arn:aws:sns:us-east-1:435830281557:bos-db-incidents
 
 >>> Alternate command: 
@@ -107,3 +107,10 @@ Be sure to:
     --metric-name DBConnectionErrors \
     --value 5 \
     --unit Count
+
+Checking Application Logs:
+>>>aws logs filter-log-events \
+--log-group-name /aws/ec2/lab-rds-app \
+--filter-pattern "ERROR"
+
+For gitbash users, you may need to prefix this command with MSYS_NO_PATHCONV=1, as gitbash may misinterpret the path and output an error
