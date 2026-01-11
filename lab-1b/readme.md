@@ -45,7 +45,7 @@ From Larry's Repo:
     * include files within
 
 
-From within python folder run the following, one at a time, in the following order:
+From within python folder run the following, one at a time, in the following order to turn these bash scripts into executable files:
 
     >>> 'chmod +x ./gate_secrets_and_role.sh'
     >>> 'chmod +x ./gate_network_db.sh'
@@ -164,9 +164,28 @@ You should see as output:
 
 ### Confirm Alarm Clears
 
+    Run:
+
+    >>> aws cloudwatch put-metric-alarm \
+    --alarm-name bos-db-connection-success \
+    --metric-name DBConnectionErrors \
+    --namespace Bos/RDSApp \
+    --statistic Sum \
+    --period 300 \
+    --threshold 3 \
+    --comparison-operator GreaterThanOrEqualToThreshold \
+    --evaluation-periods 1 \
+    --treat-missing-data notBreaching \
+    --alarm-actions <SNS_TOPIC_ARN>
+
+    (add your SNS Topic ARN)
+
+    Wait about 5 mins, then run:
+
     >>> aws cloudwatch describe-alarms \
-      --alarm-name lab-db-connection-failure \
+      --alarm-name lab-db-connection-success \
       --query "MetricAlarms[].StateValue"
+     
 
     For the purposes of this lab, the alarm was manually set to OK since it was stuck on 'INSUFFICIENT DATA':
 
