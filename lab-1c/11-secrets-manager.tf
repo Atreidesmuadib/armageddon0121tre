@@ -1,3 +1,7 @@
+# Secrets Manager
+# https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/secretsmanager_secret
+# https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/secretsmanager_secret_version
+
 ############################################
 # Parameter Store (SSM Parameters)
 ############################################

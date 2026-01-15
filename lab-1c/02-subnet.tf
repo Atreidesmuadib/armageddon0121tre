@@ -1,4 +1,7 @@
-# Explanation: Public subnets are like docking bays—ships can land directly from space (internet).
+# Subnets
+# https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/subnet
+
+#Public Subnets
 resource "aws_subnet" "bos_public_subnets" {
   count                   = length(var.public_subnet_cidrs)
   vpc_id                  = aws_vpc.bos_vpc01.id
@@ -11,7 +14,7 @@ resource "aws_subnet" "bos_public_subnets" {
   }
 }
 
-# Explanation: Private subnets are the hidden Rebel base—no direct access from the internet.
+#Private Subnets
 resource "aws_subnet" "bos_private_subnets" {
   count             = length(var.private_subnet_cidrs)
   vpc_id            = aws_vpc.bos_vpc01.id

@@ -1,8 +1,8 @@
-############################################
-# RDS Subnet Group
-############################################
+# RDS
+# https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/db_instance
+# https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/db_subnet_group
 
-# Explanation: RDS hides in private subnets like the Rebel base on Hoth—cold, quiet, and not public.
+# RDS Subnet Group
 resource "aws_db_subnet_group" "bos_rds_subnet_group01" {
   name       = "${local.name_prefix}-rds-subnet-group01"
   subnet_ids = aws_subnet.bos_private_subnets[*].id
@@ -12,11 +12,7 @@ resource "aws_db_subnet_group" "bos_rds_subnet_group01" {
   }
 }
 
-############################################
-# RDS Instance (MySQL)
-############################################
-
-# Explanation: This is the holocron of state—your relational data lives here, not on the EC2.
+# RDS Instance
 resource "aws_db_instance" "bos_rds01" {
   identifier        = "${local.name_prefix}-rds01"
   engine            = var.db_engine

@@ -1,4 +1,6 @@
 #!/bin/bash
+cloud-init clean
+
 dnf update -y
 dnf install -y python3-pip
 dnf install -y mariadb105

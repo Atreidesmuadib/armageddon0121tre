@@ -1,4 +1,6 @@
-# Explanation: bos needs a hyperlane—this VPC is the Millennium Falcon’s flight corridor.
+# VPC
+# https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/vpc
+
 resource "aws_vpc" "bos_vpc01" {
   cidr_block           = "10.26.0.0/16"
   enable_dns_support   = true
