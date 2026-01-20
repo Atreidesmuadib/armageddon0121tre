@@ -74,3 +74,22 @@ output "bos_waf_arn" {
 output "bos_dashboard_name" {
   value = aws_cloudwatch_dashboard.bos_dashboard01.dashboard_name
 }
+
+# Explanation: Outputs are the nav computer readout—Chewbacca needs coordinates that humans can paste into browsers.
+output "bos_route53_zone_id" {
+  value = local.bos_zone_id
+}
+
+output "bos_app_url_https" {
+  value = "https://${var.app_subdomain}.${var.domain_name}"
+}
+
+# Explanation: The apex URL is the front gate—humans type this when they forget subdomains.
+output "bos_apex_url_https" {
+  value = "https://${var.domain_name}"
+}
+
+# Explanation: Log bucket name is where the footprints live—useful when hunting 5xx or WAF blocks.
+output "chewbacca_alb_logs_bucket_name" {
+  value = var.enable_alb_access_logs ? aws_s3_bucket.chewbacca_alb_logs_bucket01[0].bucket : null
+}

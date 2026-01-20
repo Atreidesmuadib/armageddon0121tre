@@ -29,7 +29,11 @@ resource "aws_route53_record" "bos_apex_alias01" {
     evaluate_target_health = true
   }
 }
+############################################
+# ALIAS record: app.chewbacca-growl.com -> ALB
+############################################
 
+# Explanation: This is the holographic sign outside the cantina—app.chewbacca-growl.com points to your ALB.
 # App prefix mapped to ALB
 resource "aws_route53_record" "bos_app_alias01" {
   zone_id = local.bos_zone_id
