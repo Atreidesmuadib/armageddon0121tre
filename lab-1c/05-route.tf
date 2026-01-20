@@ -48,4 +48,3 @@ resource "aws_route_table_association" "bos_private_rta" {
   subnet_id      = aws_subnet.bos_private_subnets[count.index].id
   route_table_id = aws_route_table.bos_private_rt01.id
 }
-
