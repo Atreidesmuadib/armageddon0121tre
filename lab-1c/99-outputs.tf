@@ -90,6 +90,17 @@ output "bos_apex_url_https" {
 }
 
 # Explanation: Log bucket name is where the footprints live—useful when hunting 5xx or WAF blocks.
-output "chewbacca_alb_logs_bucket_name" {
-  value = var.enable_alb_access_logs ? aws_s3_bucket.chewbacca_alb_logs_bucket01[0].bucket : null
+output "bos_alb_logs_bucket_name" {
+  value = var.enable_alb_access_logs ? aws_s3_bucket.bos_alb_logs_bucket01[0].bucket : null
 }
+
+# Explanation: Coordinates for the WAF log destination—Chewbacca wants to know where the footprints landed.
+output "bos_waf_log_destination" {
+  value = var.waf_log_destination
+}
+
+output "bos_waf_cw_log_group_name" {
+  value = var.waf_log_destination == "cloudwatch" ? aws_cloudwatch_log_group.bos_waf_log_group01[0].name : null
+}
+
+

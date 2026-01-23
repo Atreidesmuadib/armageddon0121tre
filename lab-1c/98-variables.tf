@@ -146,7 +146,7 @@ variable "manage_route53_in_terraform" {
 variable "waf_log_destination" {
   description = "Where to send AWS WAFv2 logs: 'cloudwatch', 'firehose', 's3', or 'none'"
   type        = string
-  default     = "none" # or "cloudwatch" if you want it on by default
+  default     = "cloudwatch" # or "cloudwatch" if you want it on by default
   validation {
     condition     = contains(["cloudwatch", "firehose", "s3", "none"], var.waf_log_destination)
     error_message = "Valid values are: cloudwatch, firehose, s3, none."
@@ -178,4 +178,10 @@ variable "alb_access_logs_prefix" {
     condition     = !can(regex("(?i)AWSLogs", var.alb_access_logs_prefix))
     error_message = "alb_access_logs_prefix must NOT contain 'AWSLogs' (case-insensitive) — AWS adds this automatically."
   }
+}
+
+variable "enable_waf_sampled_requests_only" {
+  description = "If true, students can optionally filter/redact fields later. (Placeholder toggle.)"
+  type        = bool
+  default     = false
 }
