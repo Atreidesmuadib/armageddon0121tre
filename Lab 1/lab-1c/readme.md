@@ -6,9 +6,13 @@ At this point, we're working with a solid Infrastructure as Code (IaC) AWS infra
 
 After adding our Lambda and Bedrock incident reports in Lab-1b, we've moved our EC2 into a private subnet, placed behind a web-application firewall (WAF), and a public Application Load Balancer (ALB) secured by TLS.
 
-We've also implemented Route 53 to point DNS queries for our app to the ALB, among other items.
+We've also implemented Route 53 to point DNS queries for our app to the ALB, among other items such as VPC Interface Endpoints for:
+* SSM, EC2Messages, SSMMessages (Session Manager)
+* CloudWatch Logs
+* Secrets Manager
+* Key Management Service (KMS)
 
-This lab covered how to implement an infrastructure that is production-ready, and built with defense-in-depth in mind.
+This lab covered how to implement an infrastructure that is production-ready, and built upon defense-in-depth principles.
 
 ## Student Deliverables:
 
@@ -18,4 +22,14 @@ This lab covered how to implement an infrastructure that is production-ready, an
 
 ### terraform apply output:
 
-<img width="1380" height="634" alt="tf_apply_output" src="https://github.com/user-attachments/assets/1a61e2d5-5335-49cf-9d87-185ac6bff8b5" />
+<img width="1380" height="634" alt="tf_apply_output" src="https://github.com/user-attachments/assets/1a61e2d5-5335-49cf-9d87-185ac6bff8b5" />  
+
+
+### ***See Lab-1b readme for CLI verification commands***
+
+### Student Verification CLI Bonus A
+
+1) Prove EC2 is private (no public IP)  
+>>> aws ec2 describe-instances \
+  --instance-ids <INSTANCE_ID> \
+  --query "Reservations[].Instances[].PublicIpAddress"
