@@ -69,3 +69,8 @@ Run from SSM session:
         
 <img width="1186" height="452" alt="aws-ssm-get-param" src="https://github.com/user-attachments/assets/93ca425c-608f-4564-beb2-a477b2bed42d" />
 
+
+### 5) Prove CloudWatch logs delivery path is available via endpoint
+
+     aws logs describe-log-streams \
+    --log-group-name /aws/ec2/<prefix>-rds-app
