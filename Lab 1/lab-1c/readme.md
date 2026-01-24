@@ -27,7 +27,7 @@ This lab covered how to implement an infrastructure that is production-ready, an
 
 ### ***See Lab-1b readme for CLI verification commands***
 
-### Student Verification CLI Bonus A
+## Student Verification CLI Bonus A
 
 #### 1) Prove EC2 is private (no public IP)   
 Expected value = null
@@ -49,3 +49,10 @@ ssm, ec2messages, logs, secretsmanager, s3
   
 <img width="872" height="277" alt="prove-vpcendpoints-exist" src="https://github.com/user-attachments/assets/f09e0fe4-1249-44ab-a9f7-9e51e8c7dc7b" />
 
+
+#### 3) Prove Session Manager Path works (no SSH)
+
+Expected: your private EC2 Instance ID appears
+
+        aws ssm describe-instance-information \
+        --query "InstanceInformationList[].InstanceId"
