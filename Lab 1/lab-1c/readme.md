@@ -18,3 +18,4 @@ This lab covered how to implement an infrastructure that is production-ready, an
 
 ### terraform apply output:
 
+<img width="1380" height="634" alt="tf_apply_output" src="https://github.com/user-attachments/assets/1a61e2d5-5335-49cf-9d87-185ac6bff8b5" />
