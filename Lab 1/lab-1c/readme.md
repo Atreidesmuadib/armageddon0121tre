@@ -49,5 +49,7 @@ Expected list includes:
 
         aws ec2 describe-vpc-endpoints \
         --filters "Name=vpc-id,Values=<VPC_ID>" \
-        --query "VpcEndpoints[].ServiceName"
+        --query "VpcEndpoints[].ServiceName"  
+  
+<img width="872" height="277" alt="prove-vpcendpoints-exist" src="https://github.com/user-attachments/assets/f09e0fe4-1249-44ab-a9f7-9e51e8c7dc7b" />
 
