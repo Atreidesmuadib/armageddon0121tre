@@ -65,4 +65,7 @@ Expected: your private EC2 Instance ID appears
 Run from SSM session:  
 
         aws ssm get-parameter --name /lab/db/endpoint
-        aws secretsmanager get-secret-value --secret-id <your-secret-name>
+        aws secretsmanager get-secret-value --secret-id <your-secret-name>  
+        
+<img width="1186" height="452" alt="aws-ssm-get-param" src="https://github.com/user-attachments/assets/93ca425c-608f-4564-beb2-a477b2bed42d" />
+
