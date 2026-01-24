@@ -34,4 +34,5 @@ Expected value = null
 >>> aws ec2 describe-instances \
   --instance-ids <INSTANCE_ID> \
   --query "Reservations[].Instances[].PublicIpAddress"
+<img width="1146" height="97" alt="prove-ec2-private" src="https://github.com/user-attachments/assets/59dae891-92dd-4be5-a5a5-52c814816670" />
 
