@@ -46,7 +46,17 @@ resource "aws_route53_record" "bos_app_alias01" {
     evaluate_target_health = true
   }
 }
+resource "aws_route53_record" "bos_www_alias01" {
+    zone_id = local.bos_zone_id
+    name    = "www.${var.domain_name}"
+    type    = "A"
 
+    alias {
+      name                   = aws_lb.bos_alb01.dns_name
+      zone_id                = aws_lb.bos_alb01.zone_id
+      evaluate_target_health = true
+    }
+  }
 ############################################
 # ACM DNS Validation Records
 ############################################

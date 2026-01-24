@@ -5,7 +5,7 @@
 # Explanation: TLS is the diplomatic passport — browsers trust you, and Chewbacca stops growling at plaintext.
 resource "aws_acm_certificate" "bos_acm_cert01" {
   domain_name       = local.bos_fqdn
-  subject_alternative_names = [var.domain_name]
+  subject_alternative_names = [var.domain_name, "www.${var.domain_name}"]
   validation_method = var.certificate_validation_method
 
   # TODO: students can add subject_alternative_names like var.domain_name if desired
