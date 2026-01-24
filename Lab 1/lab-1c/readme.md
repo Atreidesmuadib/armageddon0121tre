@@ -29,7 +29,9 @@ This lab covered how to implement an infrastructure that is production-ready, an
 
 ### Student Verification CLI Bonus A
 
-1) Prove EC2 is private (no public IP)  
+1) Prove EC2 is private (no public IP)   
+Expected value = null
 >>> aws ec2 describe-instances \
   --instance-ids <INSTANCE_ID> \
   --query "Reservations[].Instances[].PublicIpAddress"
+
