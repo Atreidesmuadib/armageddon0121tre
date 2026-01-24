@@ -4,7 +4,7 @@ cloud-init clean
 dnf update -y
 dnf install -y python3-pip
 dnf install -y mariadb105
-pip3 install flask pymysql boto3
+pip3 install flask pymysql boto3 python-json-logger
 
 mkdir -p /opt/rdsapp
 cat >/opt/rdsapp/app.py <<'PY'
@@ -14,14 +14,28 @@ import boto3
 import pymysql
 import logging
 from flask import Flask, request
+from pythonjsonlogger import jsonlogger
+from datetime import datetime
 
-# Setup logging
-logging.basicConfig(
-    filename='/opt/rdsapp/app.log',
-    level=logging.INFO,
-    format='%(asctime)s %(levelname)s %(name)s %(threadName)s : %(message)s'
-)
+# Setup JSON logging
+class CustomJsonFormatter(jsonlogger.JsonFormatter):
+    def add_fields(self, log_record, record, message_dict):
+        super(CustomJsonFormatter, self).add_fields(log_record, record, message_dict)
+        log_record['timestamp'] = datetime.utcnow().isoformat()
+        log_record['level'] = record.levelname
+        # Add custom fields if provided via extra={}
+        if hasattr(record, 'event'):
+            log_record['event'] = record.event
+        if hasattr(record, 'reason'):
+            log_record['reason'] = record.reason
+        if hasattr(record, 'endpoint'):
+            log_record['endpoint'] = record.endpoint
+
 logger = logging.getLogger(__name__)
+handler = logging.FileHandler('/opt/rdsapp/app.log')
+handler.setFormatter(CustomJsonFormatter())
+logger.addHandler(handler)
+logger.setLevel(logging.INFO)
 
 REGION = os.environ.get("AWS_REGION", "us-east-1")
 SECRET_ID = os.environ.get("SECRET_ID", "bos/rds/mysql")
@@ -33,7 +47,11 @@ def get_db_creds():
         s = json.loads(resp["SecretString"])
         return s
     except Exception as e:
-        logger.error(f"Failed to retrieve secret {SECRET_ID}: {str(e)}")
+        logger.error("Failed to retrieve secret", extra={
+            "event": "secret_retrieval_fail",
+            "reason": str(e),
+            "secret_id": SECRET_ID
+        })
         raise
 
 def get_conn():
@@ -45,15 +63,25 @@ def get_conn():
     db = c.get("dbname", "labdb")
     try:
         return pymysql.connect(host=host, user=user, password=password, port=port, database=db, autocommit=True)
+    except pymysql.err.OperationalError as e:
+        reason = "timeout" if "timeout" in str(e).lower() else "refused" if "refused" in str(e).lower() else str(e)
+        logger.error("DB connection failed", extra={
+            "event": "db_connect_fail",
+            "reason": reason
+        })
+        raise
     except Exception as e:
-        logger.error(f"DB connection failed: {str(e)}")
+        logger.error("DB connection failed", extra={
+            "event": "db_connect_fail",
+            "reason": str(e)
+        })
         raise
 
 app = Flask(__name__)
 
 @app.route("/")
 def home():
-    logger.info("Accessed home page")
+    logger.info("Page accessed", extra={"event": "page_view", "endpoint": "home"})
     return """
     <h2>EC2 → RDS Notes App</h2>
     <p>POST /add?note=hello</p>
@@ -62,7 +90,7 @@ def home():
 
 @app.route("/init")
 def init_db():
-    logger.info("Initializing database")
+    logger.info("Initializing database", extra={"event": "db_init_start", "endpoint": "init"})
     c = get_db_creds()
     host = c["host"]
     user = c["username"]
@@ -81,17 +109,24 @@ def init_db():
         """)
         cur.close()
         conn.close()
-        logger.info("Database and table initialized successfully")
+        logger.info("Database initialized", extra={"event": "db_init_success"})
         return "Initialized labdb + notes table."
     except Exception as e:
-        logger.error(f"DB init failed: {str(e)}")
+        logger.error("DB init failed", extra={
+            "event": "db_init_fail",
+            "reason": str(e)
+        })
         return f"Initialization failed: {str(e)}", 500
 
 @app.route("/add", methods=["POST", "GET"])
 def add_note():
     note = request.args.get("note", "").strip()
     if not note:
-        logger.warning("Add note requested without 'note' parameter")
+        logger.warning("Missing parameter", extra={
+            "event": "missing_param",
+            "reason": "note parameter required",
+            "endpoint": "add"
+        })
         return "Missing note param. Try: /add?note=hello", 400
     try:
         conn = get_conn()
@@ -99,15 +134,19 @@ def add_note():
         cur.execute("INSERT INTO notes(note) VALUES(%s);", (note,))
         cur.close()
         conn.close()
-        logger.info(f"Inserted note: {note}")
+        logger.info("Note inserted", extra={"event": "note_add_success", "endpoint": "add"})
         return f"Inserted note: {note}"
     except Exception as e:
-        logger.error(f"Add note failed: {str(e)}")
+        logger.error("Add note failed", extra={
+            "event": "note_add_fail",
+            "reason": str(e),
+            "endpoint": "add"
+        })
         return f"Insert failed: {str(e)}", 500
 
 @app.route("/list")
 def list_notes():
-    logger.info("Listing notes")
+    logger.info("Listing notes", extra={"event": "list_start", "endpoint": "list"})
     try:
         conn = get_conn()
         cur = conn.cursor()
@@ -121,16 +160,22 @@ def list_notes():
         out += "</ul>"
         if not rows:
             out = "No notes yet."
-            logger.info("No notes found")
-        else:
-            logger.info(f"Retrieved {len(rows)} notes")
+        logger.info("Notes retrieved", extra={
+            "event": "list_success",
+            "endpoint": "list",
+            "count": len(rows)
+        })
         return out
     except Exception as e:
-        logger.error(f"List notes failed: {str(e)}")
+        logger.error("List notes failed", extra={
+            "event": "list_fail",
+            "reason": str(e),
+            "endpoint": "list"
+        })
         return f"Cannot list notes: {str(e)}", 500
 
 if __name__ == "__main__":
-    logger.info("Starting Flask app")
+    logger.info("App starting", extra={"event": "app_start"})
     app.run(host="0.0.0.0", port=80)
 PY
 
