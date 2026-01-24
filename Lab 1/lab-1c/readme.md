@@ -55,4 +55,6 @@ ssm, ec2messages, logs, secretsmanager, s3
 Expected: your private EC2 Instance ID appears
 
         aws ssm describe-instance-information \
-        --query "InstanceInformationList[].InstanceId"
+        --query "InstanceInformationList[].InstanceId"  
+        
+<img width="826" height="132" alt="prove-session-mgr-path" src="https://github.com/user-attachments/assets/70869847-f557-4ed7-af11-ac589fe8ff57" />
