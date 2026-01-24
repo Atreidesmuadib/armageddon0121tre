@@ -13,3 +13,5 @@ This lab covered how to implement an infrastructure that is production-ready, an
 ## Student Deliverables:
 
 ### terraform plan output:
+
+<img width="1172" height="598" alt="tf_plan_output" src="https://github.com/user-attachments/assets/7b850b57-743f-4417-9e44-e022706e1046" />
