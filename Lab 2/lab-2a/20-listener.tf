@@ -33,3 +33,47 @@ resource "aws_lb_listener" "bos_https_listener01" {
 
   depends_on = [aws_acm_certificate_validation.bos_acm_validation01]
 }
+
+### Lab 2a
+# Explanation: This is Chewbacca’s secret handshake — if the header isn’t present, you don’t get in.
+resource "random_password" "bos_origin_header_value01" {
+  length  = 32
+  special = false
+}
+
+# Explanation: ALB checks for Chewbacca’s secret growl — no growl, no service.
+resource "aws_lb_listener_rule" "bos_require_origin_header01" {
+  listener_arn = aws_lb_listener.bos_https_listener01.arn
+  priority     = 10
+
+  action {
+    type             = "forward"
+    target_group_arn = aws_lb_target_group.bos_tg01.arn
+  }
+
+  condition {
+    http_header {
+      http_header_name = "X-BOS-Growl"
+      values           = [random_password.bos_origin_header_value01.result]
+    }
+  }
+}
+
+# Explanation: If you don’t know the growl, you get a 403 — Chewbacca does not negotiate.
+resource "aws_lb_listener_rule" "bos_default_block01" {
+  listener_arn = aws_lb_listener.bos_https_listener01.arn
+  priority     = 99
+
+  action {
+    type = "fixed-response"
+    fixed_response {
+      content_type = "text/plain"
+      message_body = "Forbidden"
+      status_code  = "403"
+    }
+  }
+
+  condition {
+    path_pattern { values = ["*"] }
+  }
+}
