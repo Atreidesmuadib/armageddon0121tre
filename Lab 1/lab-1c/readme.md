@@ -76,3 +76,7 @@ Run from SSM session:
     --log-group-name /aws/ec2/<prefix>-rds-app  
 
 <img width="1107" height="276" alt="cloudwatch-logs-delivery-path" src="https://github.com/user-attachments/assets/721d28ab-c650-4bcc-90c9-297e306f4157" />
+
+##  
+
+## Student Verification CLI Bonus B
