@@ -58,3 +58,11 @@ Expected: your private EC2 Instance ID appears
         --query "InstanceInformationList[].InstanceId"  
         
 <img width="826" height="132" alt="prove-session-mgr-path" src="https://github.com/user-attachments/assets/70869847-f557-4ed7-af11-ac589fe8ff57" />
+
+
+### 4) Prove the instance can read both config stores
+
+Run from SSM session:  
+
+        aws ssm get-parameter --name /lab/db/endpoint
+        aws secretsmanager get-secret-value --secret-id <your-secret-name>
