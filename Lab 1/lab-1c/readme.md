@@ -41,11 +41,7 @@ Expected value = null
 #### 2) Prove VPC endpoints exist  
 
 Expected list includes:  
-* ssm
-* ec2messages
-* logs
-* secretsmanager
-* s3
+ssm, ec2messages, logs, secretsmanager, s3  
 
         aws ec2 describe-vpc-endpoints \
         --filters "Name=vpc-id,Values=<VPC_ID>" \
