@@ -73,4 +73,6 @@ Run from SSM session:
 ### 5) Prove CloudWatch logs delivery path is available via endpoint
 
      aws logs describe-log-streams \
-    --log-group-name /aws/ec2/<prefix>-rds-app
+    --log-group-name /aws/ec2/<prefix>-rds-app  
+
+<img width="1107" height="276" alt="cloudwatch-logs-delivery-path" src="https://github.com/user-attachments/assets/721d28ab-c650-4bcc-90c9-297e306f4157" />
