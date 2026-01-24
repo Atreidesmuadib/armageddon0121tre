@@ -30,9 +30,9 @@ This lab covered how to implement an infrastructure that is production-ready, an
 ### Student Verification CLI Bonus A
 
 #### 1) Prove EC2 is private (no public IP)   
-        Expected value = null
+Expected value = null
 
-        >>> aws ec2 describe-instances \
+        aws ec2 describe-instances \
         --instance-ids <INSTANCE_ID> \
         --query "Reservations[].Instances[].PublicIpAddress"  
 
@@ -40,14 +40,14 @@ This lab covered how to implement an infrastructure that is production-ready, an
 
 #### 2) Prove VPC endpoints exist  
 
-        Expected list includes:  
-        * ssm
-        * ec2messages
-        * logs
-        * secretsmanager
-        * s3
+Expected list includes:  
+* ssm
+* ec2messages
+* logs
+* secretsmanager
+* s3
 
-        >>> aws ec2 describe-vpc-endpoints \
+        aws ec2 describe-vpc-endpoints \
         --filters "Name=vpc-id,Values=<VPC_ID>" \
         --query "VpcEndpoints[].ServiceName"
 
