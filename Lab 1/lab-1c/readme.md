@@ -186,7 +186,9 @@ Forwarding ALB access logs to S3 bucket (with required policy)
 ### 1) Verify apex record exists
         aws route53 list-resource-record-sets \
     --hosted-zone-id <ZONE_ID> \
-    --query "ResourceRecordSets[?Name=='chewbacca-growl.com.']"
+    --query "ResourceRecordSets[?Name=='chewbacca-growl.com.']"  
+
+<img width="1175" height="755" alt="verify-apex-records" src="https://github.com/user-attachments/assets/c4cb6fa1-99f8-41c3-bf0d-41f0161df7dc" />  
 
 ### 2) Verify ALB logging is enabled
 
@@ -204,11 +206,18 @@ Then:
         aws elbv2 describe-load-balancer-attributes \
         --load-balancer-arn <ALB_ARN>
 
+
+<img width="1318" height="611" alt="verify-logging-enabled" src="https://github.com/user-attachments/assets/d0c8dd9c-0466-4c06-b0e8-d7e44a1c13ad" />  
+
 ### 3) Generate some traffic
 
         curl -I https://chewbacca-growl.com
-        curl -I https://app.chewbacca-growl.com
+        curl -I https://app.chewbacca-growl.com  
+        
+<img width="898" height="351" alt="generate-traffic" src="https://github.com/user-attachments/assets/c35fc1ee-3c98-40f5-b698-e86decde3dd5" />
 
 ### 4) Verify logs arrived in S3 (may take a few minutes)
 
         aws s3 ls s3://<BUCKET_NAME>/<PREFIX>/AWSLogs/<ACCOUNT_ID>/elasticloadbalancing/ --recursive | head
+
+<img width="1882" height="218" alt="verify-logs-in-s3" src="https://github.com/user-attachments/assets/71cf46cd-10dd-46a2-a456-3ddcccc3aa52" />  
