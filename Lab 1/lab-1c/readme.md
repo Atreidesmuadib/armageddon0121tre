@@ -181,3 +181,34 @@ Forwarding ALB access logs to S3 bucket (with required policy)
 <img width="927" height="434" alt="alb_resource_s3_logs" src="https://github.com/user-attachments/assets/90881b94-48bd-495d-901f-36d268546899" />  
 <img width="1329" height="536" alt="s3_policy" src="https://github.com/user-attachments/assets/e94727c9-a700-4e10-9ae9-a1fcebb005c8" />  
 
+
+### Verifying DNS + Logs  
+### 1) Verify apex record exists
+        aws route53 list-resource-record-sets \
+    --hosted-zone-id <ZONE_ID> \
+    --query "ResourceRecordSets[?Name=='chewbacca-growl.com.']"
+
+### 2) Verify ALB logging is enabled
+
+Expected attributes:  
+access_logs.s3.enabled = true  
+access_logs.s3.bucket = your bucket  
+access_logs.s3.prefix = your prefix  
+
+        aws elbv2 describe-load-balancers \
+    --names chewbacca-alb01 \
+    --query "LoadBalancers[0].LoadBalancerArn"
+
+Then:
+
+        aws elbv2 describe-load-balancer-attributes \
+        --load-balancer-arn <ALB_ARN>
+
+### 3) Generate some traffic
+
+        curl -I https://chewbacca-growl.com
+        curl -I https://app.chewbacca-growl.com
+
+### 4) Verify logs arrived in S3 (may take a few minutes)
+
+        aws s3 ls s3://<BUCKET_NAME>/<PREFIX>/AWSLogs/<ACCOUNT_ID>/elasticloadbalancing/ --recursive | head
