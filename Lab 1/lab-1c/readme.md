@@ -4,7 +4,7 @@
 
 At this point, we're working with a solid Infrastructure as Code (IaC) AWS infrastructure built in Terraform.
 
-After adding our Lambda and Bedrock incident reports in Lab-1b, we've moved our EC2 into a private subnet, placed behind a web-application firewall (WAF), and a public Application Load Balancer (ALB) secured by TLS.
+After adding our Lambda and Bedrock incident reports in Lab-1b, we've moved our RDS app into a private subnet and moved to using Session Manager to access our EC2 instance, which is placed behind a public facing Application Load Balancer (ALB) secured by TLS, which is in turn placed behind a web-application firewall (WAF).
 
 We've also implemented Route 53 to point DNS queries for our app to the ALB, among other items such as VPC Interface Endpoints for:
 * SSM, EC2Messages, SSMMessages (Session Manager)
@@ -80,3 +80,5 @@ Run from SSM session:
 ##  
 
 ## Student Verification CLI Bonus B
+
+### 1) 
