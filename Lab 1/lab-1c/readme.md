@@ -124,3 +124,9 @@ Key Additions:
         --dashboard-name-prefix chewbacca  
         
 <img width="999" height="233" alt="cloudwatch-list-dashboards" src="https://github.com/user-attachments/assets/73073133-14d7-48b8-bbaf-f4bc3f1fde3d" />
+
+---
+
+### Student Verification CLI Bonus C
+
+Highlighting the usage of DNS Validation with AWS Certificate Manager, ensuring validation completes before listenr creation:
