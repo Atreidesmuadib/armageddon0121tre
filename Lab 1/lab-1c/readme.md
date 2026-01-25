@@ -134,3 +134,28 @@ Highlighting the usage of DNS Validation with AWS Certificate Manager, ensuring 
 <img width="1095" height="793" alt="dns_validation_with_acm" src="https://github.com/user-attachments/assets/dcd7cda1-41f5-478b-8283-2ea5a91204d3" />
 
 
+### 1) Confirm hosted zone exists (if managed)
+
+    aws route53 list-hosted-zones-by-name \
+    --dns-name chewbacca-growl.com \
+    --query "HostedZones[].Id"
+
+### 2) Confirm app record exists
+
+    aws route53 list-resource-record-sets \
+    --hosted-zone-id <ZONE_ID> \
+    --query "ResourceRecordSets[?Name=='app.chewbacca-growl.com.']"
+
+### 3) Confirm certificate issued
+Expected: ISSUED
+
+    aws acm describe-certificate \
+    --certificate-arn <CERT_ARN> \
+    --query "Certificate.Status"
+
+### 4) Confirm HTTPS works
+Expected: HTTP/1.1 200 (or 301 then 200 depending on your app)
+
+    curl -I https://app.chewbacca-growl.com
+
+    
