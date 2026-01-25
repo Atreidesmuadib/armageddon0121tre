@@ -19,6 +19,7 @@ resource "aws_acm_certificate" "bos_acm_cert01" {
 # TODO: students implement aws_route53_record(s) if they manage DNS in Route53.
 # resource "aws_route53_record" "chewbacca_acm_validation" { ... }
 
+
 # Explanation: Once validated, ACM becomes the “green checkmark” — until then, ALB HTTPS won’t work.
 resource "aws_acm_certificate_validation" "bos_acm_validation01" {
   certificate_arn = aws_acm_certificate.bos_acm_cert01.arn
@@ -50,3 +51,25 @@ resource "aws_acm_certificate_validation" "bos_acm_validation01" {
 #     create = "30m"  # optional: give more time if propagation is slow
 #   }
 # }
+
+## Lab 2a
+# Adding a Cloudfront ACM Certificate in us-east-1
+resource "aws_acm_certificate" "bos_cf_acm_cert01" {
+    provider          = aws.us_east_1
+    domain_name       = var.domain_name
+    subject_alternative_names = ["*.${var.domain_name}"]
+    validation_method = "DNS"
+
+    tags = {
+      Name = "${var.project_name}-cf-acm-cert01"
+    }
+  }
+
+# Explanation: DNS validation records are the “prove you own the planet” ritual — Route53 makes this elegant.
+  resource "aws_acm_certificate_validation" "bos_cf_acm_validation01" {
+    provider        = aws.us_east_1
+    certificate_arn = aws_acm_certificate.bos_cf_acm_cert01.arn
+    validation_record_fqdns = [
+      for r in aws_route53_record.bos_cf_acm_validation_records01 : r.fqdn
+    ]
+  }

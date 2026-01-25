@@ -49,7 +49,7 @@ resource "aws_cloudfront_distribution" "bos_cf01" {
 
   # TODO: students must use ACM cert in us-east-1 for CloudFront
   viewer_certificate {
-    acm_certificate_arn      = aws_acm_certificate.bos_acm_cert01.arn
+    acm_certificate_arn      = aws_acm_certificate_validation.bos_cf_acm_validation01.certificate_arn
     ssl_support_method       = "sni-only"
     minimum_protocol_version = "TLSv1.2_2021"
   }

@@ -84,6 +84,27 @@ resource "aws_route53_record" "bos_acm_validation_records01" {
   records = [each.value.record]
 }
 
+# Lab 2a Cloudfront DNS Validation Records
+resource "aws_route53_record" "bos_cf_acm_validation_records01" {
+  provider        = aws.us_east_1
+  allow_overwrite = true
+  for_each = var.certificate_validation_method == "DNS" ? {
+    for dvo in aws_acm_certificate.bos_cf_acm_cert01.domain_validation_options :
+    dvo.domain_name => {
+      name   = dvo.resource_record_name
+      type   = dvo.resource_record_type
+      record = dvo.resource_record_value
+    }
+  } : {}
+
+  zone_id = local.bos_zone_id
+  name    = each.value.name
+  type    = each.value.type
+  ttl     = 60
+
+  records = [each.value.record]
+}
+
 ############################################
 # S3 bucket for ALB access logs
 ############################################

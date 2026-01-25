@@ -185,9 +185,3 @@ variable "enable_waf_sampled_requests_only" {
   type        = bool
   default     = false
 }
-
-### Lab 2a
-variable "cloudfront_acm_cert_arn" {
-  description = "ACM certificate ARN in us-east-1 for CloudFront (covers zerotrustzone.dev and app.zerotrustzone.dev)."
-  type        = string
-}
