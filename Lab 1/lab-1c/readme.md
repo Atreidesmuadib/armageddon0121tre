@@ -177,3 +177,7 @@ Enabling Zone apex record to forward traffic to ALB
 
 Forwarding ALB access logs to S3 bucket (with required policy)
 
+<img width="985" height="545" alt="secure_s3_resource" src="https://github.com/user-attachments/assets/f9d227a9-62b6-4fa5-8e75-478a10022e33" />  
+<img width="927" height="434" alt="alb_resource_s3_logs" src="https://github.com/user-attachments/assets/90881b94-48bd-495d-901f-36d268546899" />  
+<img width="1329" height="536" alt="s3_policy" src="https://github.com/user-attachments/assets/e94727c9-a700-4e10-9ae9-a1fcebb005c8" />  
+
