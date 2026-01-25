@@ -221,3 +221,9 @@ Then:
         aws s3 ls s3://<BUCKET_NAME>/<PREFIX>/AWSLogs/<ACCOUNT_ID>/elasticloadbalancing/ --recursive | head
 
 <img width="1882" height="218" alt="verify-logs-in-s3" src="https://github.com/user-attachments/assets/71cf46cd-10dd-46a2-a456-3ddcccc3aa52" />  
+
+---
+
+### Student Verification CLI Bonus E
+
+Setting WAF log destination to CloudWatch and log review
