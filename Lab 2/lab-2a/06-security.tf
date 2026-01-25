@@ -141,6 +141,7 @@ resource "aws_vpc_security_group_ingress_rule" "bos_alb_ingres_443" {
   ip_protocol       = "tcp"
   to_port           = 443
 }
+
 resource "aws_vpc_security_group_egress_rule" "bos_alb_egress" {
   security_group_id = aws_security_group.bos_alb_sg01.id
   cidr_ipv4         = "0.0.0.0/0"

@@ -5,7 +5,7 @@
 # Explanation: bos doesn’t hand out the Falcon keys—this policy scopes reads to your lab paths only.
 resource "aws_iam_policy" "bos_leastpriv_read_params01" {
   name        = "${local.bos_prefix}-lp-ssm-read01"
-  description = "Least-privilege read for SSM Parameter Store under /lab/db/*"
+  description = "Least-privilege read for SSM Parameter Store under /bos/db/*"
 
   policy = jsonencode({
     Version = "2012-10-17"
@@ -19,7 +19,7 @@ resource "aws_iam_policy" "bos_leastpriv_read_params01" {
           "ssm:GetParametersByPath"
         ]
         Resource = [
-          "arn:aws:ssm:${data.aws_region.bos_region01.region}:${data.aws_caller_identity.bos_self01.account_id}:parameter/lab/db/*"
+          "arn:aws:ssm:${data.aws_region.bos_region01.region}:${data.aws_caller_identity.bos_self01.account_id}:parameter/bos/db/*"
         ]
       }
     ]
