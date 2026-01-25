@@ -127,7 +127,7 @@ Key Additions:
 
 ---
 
-### Student Verification CLI Bonus C
+## Student Verification CLI Bonus C
 
 Highlighting the usage of DNS Validation with AWS Certificate Manager, ensuring validation completes before listener creation:
 
