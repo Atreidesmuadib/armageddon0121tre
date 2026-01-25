@@ -68,7 +68,7 @@ output "bos_acm_cert_arn" {
 }
 
 output "bos_waf_arn" {
-  value = var.enable_waf ? aws_wafv2_web_acl.bos_waf01[0].arn : null
+  value = var.enable_waf ? aws_wafv2_web_acl.bos_cf_waf01.arn : null
 }
 
 output "bos_dashboard_name" {
@@ -102,5 +102,3 @@ output "bos_waf_log_destination" {
 output "bos_waf_cw_log_group_name" {
   value = var.waf_log_destination == "cloudwatch" ? aws_cloudwatch_log_group.bos_waf_log_group01[0].name : null
 }
-
-

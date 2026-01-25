@@ -1,6 +1,6 @@
-############################################
+###########################################
 # WAFv2 Web ACL (Basic managed rules)
-############################################
+###########################################
 
 # Explanation: WAF is the shield generator — it blocks the cheap blaster fire before it hits your ALB.
 # resource "aws_wafv2_web_acl" "bos_waf01" {
@@ -47,7 +47,7 @@
 #   }
 # }
 
-# Explanation: Attach the shield generator to the customs checkpoint — ALB is now protected.
+# # Explanation: Attach the shield generator to the customs checkpoint — ALB is now protected.
 # resource "aws_wafv2_web_acl_association" "bos_waf_assoc01" {
 #   count = var.enable_waf ? 1 : 0
 
@@ -77,20 +77,22 @@ resource "aws_cloudwatch_log_group" "bos_waf_log_group01" {
   }
 }
 
+
 # Explanation: This wire connects the shield generator to the black box—WAF -> CloudWatch Logs.
-resource "aws_wafv2_web_acl_logging_configuration" "bos_waf_logging01" {
-  count = var.enable_waf && var.waf_log_destination == "cloudwatch" ? 1 : 0
+# Commented out to avoid errors when using CloudFront WAF, which requires different setup.
+# resource "aws_wafv2_web_acl_logging_configuration" "bos_waf_logging01" {
+#   count = var.enable_waf && var.waf_log_destination == "cloudwatch" ? 1 : 0
 
-  resource_arn = aws_wafv2_web_acl.bos_waf01[0].arn
-  log_destination_configs = [
-    aws_cloudwatch_log_group.bos_waf_log_group01[0].arn
-  ]
+#   resource_arn = aws_wafv2_web_acl.bos_waf01[0].arn
+#   log_destination_configs = [
+#     aws_cloudwatch_log_group.bos_waf_log_group01[0].arn
+#   ]
 
-  # TODO: Students can add redacted_fields (authorization headers, cookies, etc.) as a stretch goal.
-  # redacted_fields { ... }
+#   # TODO: Students can add redacted_fields (authorization headers, cookies, etc.) as a stretch goal.
+#   # redacted_fields { ... }
 
-  depends_on = [aws_wafv2_web_acl.bos_waf01]
-}
+#   depends_on = [aws_wafv2_web_acl.bos_waf01]
+# }
 
 # ############################################
 # # Option 2: S3 destination (direct)

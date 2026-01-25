@@ -46,3 +46,9 @@ locals {
   # Explanation: This is the app address that will growl at the galaxy (app.zerotrustzone.dev).
   bos_app_fqdn = "${var.app_subdomain}.${var.domain_name}"
 }
+
+## lab 2B Data
+# Explanation: Bos only opens the hangar to CloudFront — everyone else gets the Brotherhood roar.
+data "aws_ec2_managed_prefix_list" "bos_cf_origin_facing01" {
+  name = "com.amazonaws.global.cloudfront.origin-facing"
+}
