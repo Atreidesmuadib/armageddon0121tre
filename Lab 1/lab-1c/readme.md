@@ -130,3 +130,7 @@ Key Additions:
 ### Student Verification CLI Bonus C
 
 Highlighting the usage of DNS Validation with AWS Certificate Manager, ensuring validation completes before listener creation:
+
+<img width="1095" height="793" alt="dns_validation_with_acm" src="https://github.com/user-attachments/assets/dcd7cda1-41f5-478b-8283-2ea5a91204d3" />
+
+
