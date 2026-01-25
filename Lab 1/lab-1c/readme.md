@@ -90,25 +90,37 @@ Key Additions:
 ### 1) ALB exists and is active
         aws elbv2 describe-load-balancers \
         --names chewbacca-alb01 \
-        --query "LoadBalancers[0].State.Code"
+        --query "LoadBalancers[0].State.Code"  
+        
+<img width="972" height="130" alt="verify-alb-active" src="https://github.com/user-attachments/assets/98de6257-5769-4595-9651-ff9c06fe6935" />
 
 ### 2) HTTPS listener exists on 443
         aws elbv2 describe-listeners \
         --load-balancer-arn <ALB_ARN> \
-        --query "Listeners[].Port"
+        --query "Listeners[].Port"  
+        
+<img width="913" height="160" alt="listener-exists" src="https://github.com/user-attachments/assets/241d0966-ced2-423e-a50e-e11136869a09" />
 
 ### 3) Target is healthy
         aws elbv2 describe-target-health \
-        --target-group-arn <TG_ARN>
+        --target-group-arn <TG_ARN>  
+        
+<img width="1123" height="396" alt="target-is-healthy" src="https://github.com/user-attachments/assets/3e81612b-b672-4815-9b01-acfe678f0409" />
 
 ### 4) WAF Attached
         aws wafv2 get-web-acl-for-resource \
-        --resource-arn <ALB_ARN>
+        --resource-arn <ALB_ARN>  
+        
+<img width="1355" height="820" alt="waf-attached" src="https://github.com/user-attachments/assets/aebb2cab-0439-419b-898b-67320b4ed2b1" />
 
 ### 5) Alarm created (ALB 5xx)
         aws cloudwatch describe-alarms \
-        --alarm-name-prefix chewbacca-alb-5xx
+        --alarm-name-prefix chewbacca-alb-5xx  
+        
+<img width="923" height="654" alt="alarm-created" src="https://github.com/user-attachments/assets/bc8dfd84-1d59-4ff6-ba53-485726a9a47b" />
 
 ### 6) Dashboard exists
         aws cloudwatch list-dashboards \
-        --dashboard-name-prefix chewbacca
+        --dashboard-name-prefix chewbacca  
+        
+<img width="999" height="233" alt="cloudwatch-list-dashboards" src="https://github.com/user-attachments/assets/73073133-14d7-48b8-bbaf-f4bc3f1fde3d" />
