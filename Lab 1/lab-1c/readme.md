@@ -230,18 +230,27 @@ Setting WAF log destination to CloudWatch and log review
 
 ### 1) Variable Adds
 
+<img width="903" height="333" alt="waf_log_destination_retention" src="https://github.com/user-attachments/assets/853b9718-f98a-4779-8f9f-3d0359d1c4df" />  
+<img width="867" height="119" alt="waf_sampled_requests" src="https://github.com/user-attachments/assets/3dd7ee06-8278-4d68-8852-8cccdec107eb" />  
+
 ### 2) CloudWatch WAF logging.tf
+<img width="861" height="329" alt="cloudwatch_logs_group_tf" src="https://github.com/user-attachments/assets/2ccc72cb-b6e4-47d0-8a16-236ec53c0f34" />  
 
 ### 3A) Confirm WAF logging is enabled
 Expected: LogDestinationConfigs contains exactly one destination.
 
         aws wafv2 get-logging-configuration \
-        --resource-arn <WEB_ACL_ARN>
+        --resource-arn <WEB_ACL_ARN>  
+        
+<img width="968" height="257" alt="confirm-waf-logging" src="https://github.com/user-attachments/assets/96378347-d261-4d85-b1cb-4ca1d8fbb995" />
+
 
 ### 3B) Generate traffic (hits + blocks)
 
         curl -I https://chewbacca-growl.com/
-        curl -I https://app.chewbacca-growl.com/
+        curl -I https://app.chewbacca-growl.com/  
+
+<img width="798" height="333" alt="get-traffic-success" src="https://github.com/user-attachments/assets/a2a06874-7793-4ed0-81bf-4cc339dbcbad" />
 
 ### 3C1) If CloudWatch Logs destination
 
@@ -254,3 +263,8 @@ Then pull recent events:
         aws logs filter-log-events \
         --log-group-name aws-waf-logs-<project>-webacl01 \
         --max-items 20
+
+<img width="895" height="329" alt="cloudwatch-describe-log-streams" src="https://github.com/user-attachments/assets/3b49cfd2-3f8c-4419-bdec-5b273adad75b" />  
+
+<img width="974" height="593" alt="log-filter-events" src="https://github.com/user-attachments/assets/4d9f2d8f-d80f-4730-bf0e-348508fcfec4" />  
+
