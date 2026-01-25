@@ -81,4 +81,34 @@ Run from SSM session:
 
 ## Student Verification CLI Bonus B
 
-### 1) 
+Key Additions:
+* Securing a domain with AWS Certificate Manager (ACM) + TLS
+* Route 53 Hosting and ACM Validation
+* CloudWatch Dashboards
+* SNS Alarms
+
+### 1) ALB exists and is active
+        aws elbv2 describe-load-balancers \
+        --names chewbacca-alb01 \
+        --query "LoadBalancers[0].State.Code"
+
+### 2) HTTPS listener exists on 443
+        aws elbv2 describe-listeners \
+        --load-balancer-arn <ALB_ARN> \
+        --query "Listeners[].Port"
+
+### 3) Target is healthy
+        aws elbv2 describe-target-health \
+        --target-group-arn <TG_ARN>
+
+### 4) WAF Attached
+        aws wafv2 get-web-acl-for-resource \
+        --resource-arn <ALB_ARN>
+
+### 5) Alarm created (ALB 5xx)
+        aws cloudwatch describe-alarms \
+        --alarm-name-prefix chewbacca-alb-5xx
+
+### 6) Dashboard exists
+        aws cloudwatch list-dashboards \
+        --dashboard-name-prefix chewbacca
