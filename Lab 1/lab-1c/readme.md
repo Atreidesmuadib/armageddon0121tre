@@ -224,6 +224,33 @@ Then:
 
 ---
 
-### Student Verification CLI Bonus E
+## Student Verification CLI Bonus E
 
 Setting WAF log destination to CloudWatch and log review
+
+### 1) Variable Adds
+
+### 2) CloudWatch WAF logging.tf
+
+### 3A) Confirm WAF logging is enabled
+Expected: LogDestinationConfigs contains exactly one destination.
+
+        aws wafv2 get-logging-configuration \
+        --resource-arn <WEB_ACL_ARN>
+
+### 3B) Generate traffic (hits + blocks)
+
+        curl -I https://chewbacca-growl.com/
+        curl -I https://app.chewbacca-growl.com/
+
+### 3C1) If CloudWatch Logs destination
+
+        aws logs describe-log-streams \
+        --log-group-name aws-waf-logs-<project>-webacl01 \
+        --order-by LastEventTime --descending
+
+Then pull recent events:
+
+        aws logs filter-log-events \
+        --log-group-name aws-waf-logs-<project>-webacl01 \
+        --max-items 20
