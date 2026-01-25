@@ -169,6 +169,6 @@ Expected: HTTP/1.1 200 (or 301 then 200 depending on your app)
 
 
 ## Student Verification CLI Bonus D
-* Enabling Zone apex record to forward traffic to ALB
-* Forwarding ALB access logs to S3 bucket (with required policy)
+* Enabling the Zone apex ALIAS to forward traffic to ALB
+* Securely forwarding ALB access logs to S3 bucket (with required policy)
 
