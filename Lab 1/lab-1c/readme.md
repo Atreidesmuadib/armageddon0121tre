@@ -277,48 +277,66 @@ Then pull recent events:
         
         fields @timestamp, action
         | stats count() as hits by action
-        | sort hits desc
+        | sort hits desc  
+        
+<img width="1450" height="940" alt="A1_whats_happening_rn_" src="https://github.com/user-attachments/assets/c1f2cbe4-c96f-4859-ae45-f28651a0ee4c" />  
 
 ### A2) Top client IPs (who is hitting us the most?)
 
         fields @timestamp, httpRequest.clientIp as clientIp
         | stats count() as hits by clientIp
         | sort hits desc
-        | limit 25
+        | limit 25  
+        
+<img width="1489" height="904" alt="A2_top_client_IPs" src="https://github.com/user-attachments/assets/6ebdcac0-05a5-47eb-a96b-625fba379493" />  
+
 
 ### A3) Top requested URIs (what are they trying to reach?)
         fields @timestamp, httpRequest.uri as uri
         | stats count() as hits by uri
         | sort hits desc
-        | limit 25
+        | limit 25  
+        
+<img width="1915" height="952" alt="A3_top_requested_urls" src="https://github.com/user-attachments/assets/7cb008bc-064a-4a08-918c-3f237dafb8df" />
+
 
 ### A4) Blocked requests only (who/what is being blocked?)
         fields @timestamp, action, httpRequest.clientIp as clientIp, httpRequest.uri as uri
         | filter action = "BLOCK"
         | stats count() as blocks by clientIp, uri
         | sort blocks desc
-        | limit 25
+        | limit 25  
+<img width="1912" height="913" alt="A4_blocked_requests" src="https://github.com/user-attachments/assets/dc96ec46-14fb-4f36-ad9e-5548ebb92f33" />  
 
 ### A5) Which WAF rule is doing the blocking?
         fields @timestamp, action, terminatingRuleId, terminatingRuleType
         | filter action = "BLOCK"
         | stats count() as blocks by terminatingRuleId, terminatingRuleType
         | sort blocks desc
-        | limit 25
+        | limit 25  
+        
+<img width="1917" height="949" alt="A5_which_waf_rule_blocking" src="https://github.com/user-attachments/assets/0a0d33a0-a628-4d81-a255-09f7c5feaa2d" />  
+
 
 ### A6) Rate of blocks over time (did it spike?)
         fields @timestamp, httpRequest.clientIp as clientIp, httpRequest.uri as uri 
         | filter uri =~ /wp-login|xmlrpc|\.env|admin|phpmyadmin|\.git|login/ 
         | stats count() as hits by clientIp, uri 
         | sort hits desc 
-        | limit 50
+        | limit 50  
+        
+<img width="1916" height="950" alt="A6_rate_of_blocks" src="https://github.com/user-attachments/assets/4e55aa63-4432-457f-841e-5d1c351a74c2" />  
+
 
 ### A7) Suspicious scanners (common patterns: admin paths, wp-login, etc.)
         fields @timestamp, httpRequest.clientIp as clientIp, httpRequest.uri as uri
         | filter uri like /wp-login|xmlrpc|\.env|admin|phpmyadmin|\.git|\/login/
         | stats count() as hits by clientIp, uri
         | sort hits desc
-        | limit 50
+        | limit 50  
+        
+<img width="1915" height="905" alt="A7_suspicious_scanners" src="https://github.com/user-attachments/assets/050ac15e-1b85-4488-ba9b-190a7f61e72c" />
+
 
 ### A8) Country/geo (if present in your WAF logs)
 Some WAF log formats include httpRequest.country. If yours does:
@@ -327,6 +345,9 @@ Some WAF log formats include httpRequest.country. If yours does:
         | stats count() as hits by country
         | sort hits desc
         | limit 25
+
+<img width="1613" height="905" alt="A8_country_geo" src="https://github.com/user-attachments/assets/cc41a7da-4c85-4b0a-a270-8c082fde00cd" />  
+
 ---
 ### B) App Queries (EC2 app log group)
 
@@ -334,13 +355,19 @@ Some WAF log formats include httpRequest.country. If yours does:
         fields @timestamp, @message
         | filter @message like /ERROR|Exception|Traceback|DB|timeout|refused/i
         | stats count() as errors by bin(1m)
-        | sort bin(1m) asc
+        | sort bin(1m) asc  
+        
+<img width="1372" height="904" alt="B1_count_errors_over_time" src="https://github.com/user-attachments/assets/eb98dce4-d22f-4369-b7a0-e552314afcfb" />  
+
 
 ### B2) Show the most recent DB failures (triage view)
         fields @timestamp, @message
         | filter @message like /DB|mysql|timeout|refused|Access denied|could not connect/i
         | sort @timestamp desc
-        | limit 50
+        | limit 50  
+
+<img width="1668" height="905" alt="B2_most_recent_DB_failures" src="https://github.com/user-attachments/assets/7db6660b-e088-455f-8d6b-6a560c0826b6" />  
+
 
 ### B3) “Is it creds or network?” classifier hints
   Credentials drift often shows: Access denied, authentication failures
@@ -355,7 +382,10 @@ Some WAF log formats include httpRequest.country. If yours does:
         @message like /refused/i, "Port/SG/ServiceRefused",
         "Other"
         )
-        | sort hits desc
+        | sort hits desc  
+
+<img width="1918" height="911" alt="B3_creds_or_network" src="https://github.com/user-attachments/assets/1945c694-16e3-4fa9-9955-7a86b35343b4" />  
+
 
 ### B4) Extract structured fields (Requires log JSON)
 If you log JSON like: {"level":"ERROR","event":"db_connect_fail","reason":"timeout"}:
@@ -363,6 +393,12 @@ If you log JSON like: {"level":"ERROR","event":"db_connect_fail","reason":"timeo
         fields @timestamp, level, event, reason
         | filter level="ERROR"
         | stats count() as n by event, reason
-        | sort n desc
+        | sort n desc  
 
-(Thou Shalt need to emit JSON logs for this one.)
+<img width="1475" height="912" alt="B4_json_logging" src="https://github.com/user-attachments/assets/6aafcbfa-e359-43c3-9442-6034d1ecd7d7" />
+
+(Thou Shalt need to emit JSON logs for this one.)  
+
+Enabled JSON logging in the user_data.sh startup script:  
+
+<img width="1020" height="728" alt="json_logging_user_data_sh" src="https://github.com/user-attachments/assets/f17f2fc8-8240-4ef7-8e11-54be4cb31a9d" />
