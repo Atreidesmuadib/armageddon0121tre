@@ -166,3 +166,9 @@ Expected: HTTP/1.1 200 (or 301 then 200 depending on your app)
     curl -I https://app.chewbacca-growl.com 
 
 <img width="855" height="172" alt="curl-i" src="https://github.com/user-attachments/assets/e8933648-bdc8-4155-9af1-fba27bef11b3" />
+
+
+## Student Verification CLI Bonus D
+* Enabling Zone apex record to forward traffic to ALB
+* Forwarding ALB access logs to S3 bucket (with required policy)
+
