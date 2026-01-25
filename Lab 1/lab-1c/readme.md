@@ -212,3 +212,9 @@ Then:
 ### 4) Verify logs arrived in S3 (may take a few minutes)
 
         aws s3 ls s3://<BUCKET_NAME>/<PREFIX>/AWSLogs/<ACCOUNT_ID>/elasticloadbalancing/ --recursive | head
+
+---
+
+## Student Verification CLI Bonus E
+
+Setting WAF logs destination to CloudWatch and log review
