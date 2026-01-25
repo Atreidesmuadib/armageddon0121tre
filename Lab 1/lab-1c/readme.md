@@ -138,24 +138,31 @@ Highlighting the usage of DNS Validation with AWS Certificate Manager, ensuring 
 
     aws route53 list-hosted-zones-by-name \
     --dns-name chewbacca-growl.com \
-    --query "HostedZones[].Id"
+    --query "HostedZones[].Id"  
+    
+<img width="1065" height="177" alt="confirm-hosted-zone" src="https://github.com/user-attachments/assets/d5d1e913-693f-441b-bbbc-49d55de765e8" />
 
 ### 2) Confirm app record exists
 
     aws route53 list-resource-record-sets \
     --hosted-zone-id <ZONE_ID> \
-    --query "ResourceRecordSets[?Name=='app.chewbacca-growl.com.']"
+    --query "ResourceRecordSets[?Name=='app.chewbacca-growl.com.']"  
+
+<img width="1116" height="240" alt="confirm-app-record" src="https://github.com/user-attachments/assets/2c9ad532-e39a-4119-b460-7c23a17bf327" />
 
 ### 3) Confirm certificate issued
 Expected: ISSUED
 
     aws acm describe-certificate \
     --certificate-arn <CERT_ARN> \
-    --query "Certificate.Status"
+    --query "Certificate.Status"  
+
+<img width="1003" height="106" alt="confirm-cert-issued" src="https://github.com/user-attachments/assets/b13d061f-2616-4c4e-9a9d-6fd33e17eabc" />
+
 
 ### 4) Confirm HTTPS works
 Expected: HTTP/1.1 200 (or 301 then 200 depending on your app)
 
-    curl -I https://app.chewbacca-growl.com
+    curl -I https://app.chewbacca-growl.com 
 
-    
+<img width="855" height="172" alt="curl-i" src="https://github.com/user-attachments/assets/e8933648-bdc8-4155-9af1-fba27bef11b3" />
