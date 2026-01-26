@@ -77,4 +77,3 @@ Expected: resolves to CloudFront (you’ll see CloudFront anycast behavior, not 
                   
 <img width="835" height="243" alt="dig_domain_points_to_cloudfront" src="https://github.com/user-attachments/assets/ddafac7a-15a3-4534-936a-b69b04361855" />  
 
----
