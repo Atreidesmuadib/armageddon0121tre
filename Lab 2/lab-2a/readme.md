@@ -21,11 +21,9 @@ Web application firewall (WAF) moves to CloudFront (WAFv2 scope = 'CLOUDFRONT'),
 
 <img width="779" height="175" alt="cloudfront_sg_prefix_id" src="https://github.com/user-attachments/assets/78b45901-4051-4bca-8fb1-293bc74fb61d" />  
 
-### Adding secret "origin-header" that ALB requires 
+### Adding secret "origin-header" that ALB requires, and "custom-header + ALB rule" that verifies "origin-header" and blocks all else
 
 <img width="1052" height="632" alt="secret_origin_header_and_listener_rule" src="https://github.com/user-attachments/assets/e5914256-3dbf-407a-8874-e53ca8ce7ff0" />  
-
-### Adding "custom-header + ALB rule" that verifies "origin-header" and blocks all else  
 
 <img width="1010" height="418" alt="alb_listener_rule_fixed_403" src="https://github.com/user-attachments/assets/9957979c-fc01-4a75-af37-6b5c258778e1" />  
 
@@ -73,8 +71,9 @@ Expected: WebACL ARN present.
 ### 3) your domain points to CloudFront:  
 
 Expected: resolves to CloudFront (you’ll see CloudFront anycast behavior, not ALB IPs)  
-                  dig yourdomain.com A +short
-                  dig app.yourdomain.com A +short  
+
+        dig yourdomain.com A +short
+        dig app.yourdomain.com A +short  
                   
 <img width="835" height="243" alt="dig_domain_points_to_cloudfront" src="https://github.com/user-attachments/assets/ddafac7a-15a3-4534-936a-b69b04361855" />  
 
