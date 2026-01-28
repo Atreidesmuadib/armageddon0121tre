@@ -22,21 +22,50 @@ resource "aws_cloudfront_distribution" "bos_cf01" {
     }
   }
 
+  # default_cache_behavior {
+  #   target_origin_id       = "${var.project_name}-alb-origin01"
+  #   viewer_protocol_policy = "redirect-to-https"
+
+  #   allowed_methods = ["GET", "HEAD", "OPTIONS", "PUT", "POST", "PATCH", "DELETE"]
+  #   cached_methods  = ["GET", "HEAD"]
+
+  #   # TODO: students choose cache policy / origin request policy for their app type
+  #   # For APIs, typically forward all headers/cookies/querystrings.
+  #   forwarded_values {
+  #     query_string = true
+  #     headers      = ["*"]
+  #     cookies { forward = "all" }
+  #   }
+  # }
+##############################################################
+#6) Patch your CloudFront distribution behaviors
+##############################################################
+
+# Explanation: Default behavior is conservative—bos assumes dynamic until proven static.
   default_cache_behavior {
-    target_origin_id       = "${var.project_name}-alb-origin01"
-    viewer_protocol_policy = "redirect-to-https"
+  target_origin_id       = "${var.project_name}-alb-origin01"
+  viewer_protocol_policy = "redirect-to-https"
 
-    allowed_methods = ["GET", "HEAD", "OPTIONS", "PUT", "POST", "PATCH", "DELETE"]
-    cached_methods  = ["GET", "HEAD"]
+  allowed_methods = ["GET","HEAD","OPTIONS","PUT","POST","PATCH","DELETE"]
+  cached_methods  = ["GET","HEAD"]
 
-    # TODO: students choose cache policy / origin request policy for their app type
-    # For APIs, typically forward all headers/cookies/querystrings.
-    forwarded_values {
-      query_string = true
-      headers      = ["*"]
-      cookies { forward = "all" }
-    }
-  }
+  cache_policy_id          = aws_cloudfront_cache_policy.bos_cache_api_disabled01.id
+  origin_request_policy_id = aws_cloudfront_origin_request_policy.bos_orp_api01.id
+}
+
+# Explanation: Static behavior is the speed lane—bos caches it hard for performance.
+ordered_cache_behavior {
+  path_pattern           = "/static/*"
+  target_origin_id       = "${var.project_name}-alb-origin01"
+  viewer_protocol_policy = "redirect-to-https"
+
+  allowed_methods = ["GET","HEAD","OPTIONS"]
+  cached_methods  = ["GET","HEAD"]
+
+  cache_policy_id            = aws_cloudfront_cache_policy.bos_cache_static01.id
+  origin_request_policy_id   = data.aws_cloudfront_origin_request_policy.bos_orp_all_viewer01.id
+  response_headers_policy_id = aws_cloudfront_response_headers_policy.bos_rsp_static01.id
+}
 
   # Explanation: Attach WAF at the edge — now WAF moved to CloudFront.
   web_acl_id = aws_wafv2_web_acl.bos_cf_waf01.arn

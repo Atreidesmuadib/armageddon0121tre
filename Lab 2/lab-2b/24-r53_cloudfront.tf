@@ -23,3 +23,16 @@ resource "aws_route53_record" "bos_app_to_cf01" {
     evaluate_target_health = false
   }
 }
+
+# Explanation: www.bos-growl.com is just a redirect to the apex — all traffic funnels through CloudFront.
+resource "aws_route53_record" "bos_www_to_cf01" {
+  zone_id = local.bos_zone_id
+  name    = "www.${var.domain_name}"
+  type    = "A"
+
+  alias {
+    name                   = aws_cloudfront_distribution.bos_cf01.domain_name
+    zone_id                = aws_cloudfront_distribution.bos_cf01.hosted_zone_id
+    evaluate_target_health = false
+  }
+}

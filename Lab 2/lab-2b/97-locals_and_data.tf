@@ -52,3 +52,7 @@ locals {
 data "aws_ec2_managed_prefix_list" "bos_cf_origin_facing01" {
   name = "com.amazonaws.global.cloudfront.origin-facing"
 }
+
+data "aws_cloudfront_origin_request_policy" "bos_orp_all_viewer01" {
+  name = "Managed-AllViewer"
+}
