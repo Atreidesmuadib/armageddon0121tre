@@ -13,7 +13,7 @@ import os
 import boto3
 import pymysql
 import logging
-from flask import Flask, request
+from flask import Flask, request, jsonify
 from pythonjsonlogger import jsonlogger
 from datetime import datetime
 
@@ -173,6 +173,31 @@ def list_notes():
             "endpoint": "list"
         })
         return f"Cannot list notes: {str(e)}", 500
+
+# New JSON API endpoint for /api/list
+@app.route("/api/list")
+def api_list():
+    logger.info("API /api/list accessed")
+    try:
+        conn = get_conn()
+        cur = conn.cursor()
+        cur.execute("SELECT id, note FROM notes ORDER BY id DESC;")
+        rows = cur.fetchall()
+        cur.close()
+        conn.close()
+        return jsonify([{"id": r[0], "note": r[1]} for r in rows])
+    except Exception as e:
+        logger.error(f"API list failed: {str(e)}")
+        return jsonify({"error": str(e)}), 500
+
+# Prevent caching on dynamic/API routes
+@app.after_request
+def add_no_cache_headers(response):
+    if request.path.startswith('/api/') or request.path in ['/list', '/add']:
+        response.headers['Cache-Control'] = 'no-cache, no-store, must-revalidate, private'
+        response.headers['Pragma'] = 'no-cache'
+        response.headers['Expires'] = '0'
+    return response
 
 if __name__ == "__main__":
     logger.info("App starting", extra={"event": "app_start"})

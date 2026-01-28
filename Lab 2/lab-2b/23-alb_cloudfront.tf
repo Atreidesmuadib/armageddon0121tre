@@ -73,7 +73,8 @@ ordered_cache_behavior {
   # TODO: students set aliases for zerotrustzone.dev and app.zerotrustzone.dev
   aliases = [
     var.domain_name,
-    "${var.app_subdomain}.${var.domain_name}"
+    "${var.app_subdomain}.${var.domain_name}",
+    "www.${var.domain_name}"
   ]
 
   # TODO: students must use ACM cert in us-east-1 for CloudFront
